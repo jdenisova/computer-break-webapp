@@ -1,0 +1,22 @@
+<nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #3b2b1aff;">
+  <div class="container-fluid">
+    {% if brand %}
+      <a class="navbar-brand" href="{{ menu[0].url }}">{{ brand }}</a>
+    {% else %}
+      <a class="navbar-brand" href="{{ menu[0].url }}">Computer Break</a>
+    {% endif %}
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% for m in menu %}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ m.url }}">{{ m.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</nav>

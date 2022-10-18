@@ -1,0 +1,8 @@
+<nav aria-label="breadcrumb" >
+  <ol class="breadcrumb" style="background-color: #3b2b1aff;">
+    {% for m in menu %}
+      <li class="breadcrumb-item" ><a href="{{m.url}}" style="color: white;">{{m.name}}</a></li>
+    {% endfor %}
+    <li class="breadcrumb-item"><a href="#" style="color: white;">Наверх</a></li>
+  </ol>
+</nav>
