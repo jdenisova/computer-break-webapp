@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="/login" method="post" style="max-width:500px;">
+    <div class="row mb-3">
+        <label for="femail" class="col-sm-3 col-form-label"><h5>Email</h5></label>
+        <div class="col-sm">
+            <input type="email" name="email" class="form-control" id="femail" placeholder="">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="fpassword" class="col-sm-3 col-form-label"><h5>Пароль</h5></label>
+        <div class="col-sm">
+            <input type="password" name="password" class="form-control" id="fpassword" placeholder="">
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-outline-dark" style="width: 100%;">Войти</button>
+    </div>
+</form>
+{% endblock %}

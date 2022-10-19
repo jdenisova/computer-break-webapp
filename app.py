@@ -30,5 +30,17 @@ def page_not_found(error):
     return render_template('page404.html', menu=menu, title="Ошибка 404"), 404
 
 
+@app.route("/login", methods=["POST", "GET"])
+def login():
+
+    return render_template('login.html', menu=menu, title="Авторизация")
+
+
+@app.route("/register", methods=["POST", "GET"])
+def register():
+
+    return render_template('register.html', menu=menu, title="Регистрация")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
