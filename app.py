@@ -25,5 +25,10 @@ def community():
     return render_template('community.html', menu=menu, title="Сообщество")
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page404.html', menu=menu, title="Ошибка 404"), 404
+
+
 if __name__ == "__main__":
     app.run(debug=True)
