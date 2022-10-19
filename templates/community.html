@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-8 py-3">
+        <p>
+            <b style="color: #3b2b1aff;">Митапы по машинному обучению</b>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus imperdiet nulla malesuada pellentesque elit eget gravida. Luctus venenatis lectus magna fringilla urna porttitor rhoncus dolor purus. Aliquet lectus proin nibh nisl. Vel facilisis volutpat est velit egestas dui. Et ligula ullamcorper malesuada proin libero nunc consequat interdum varius. Convallis aenean et tortor at risus viverra. Elit eget gravida cum sociis natoque penatibus et magnis. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Nunc congue nisi vitae suscipit tellus mauris a. Interdum varius sit amet mattis vulputate enim nulla aliquet porttitor. Lacus suspendisse faucibus interdum posuere lorem ipsum. At tellus at urna condimentum mattis pellentesque. Duis at consectetur lorem donec massa sapien faucibus et molestie.
+        </p>
+        <p>
+            <a href="#" target="_blank" class="btn btn-light">
+                <img src="{{ url_for('static', filename='icons/vk.svg')}}" alt="..." height="25em" width="25em">
+                VK
+            </a>
+        </p>
+    </div>
+    <div class="col-sm-4">
+        <figure class="figure">
+            <img src="{{ url_for('static', filename='logos/meetup_logo.jpg')}}" class="figure-img img-fluid rounded" alt="...">
+        </figure>
+    </div>
+</div>
+
+<div class="row my-5">
+    <div class="col"><hr style="background-color: rgba(59,43,26,0.4);"></div>
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <figure class="figure">
+            <img src="{{ url_for('static', filename='logos/CB_logo.jpg')}}" class="figure-img img-fluid rounded" alt="...">
+        </figure>
+    </div>
+    <div class="col-sm-8 py-3">
+        <p>
+            <b style="color: #3b2b1aff;">Computer Break</b>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempus imperdiet nulla malesuada pellentesque elit eget gravida. Luctus venenatis lectus magna fringilla urna porttitor rhoncus dolor purus. Aliquet lectus proin nibh nisl. Vel facilisis volutpat est velit egestas dui. Et ligula ullamcorper malesuada proin libero nunc consequat interdum varius. Convallis aenean et tortor at risus viverra. Elit eget gravida cum sociis natoque penatibus et magnis. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Nunc congue nisi vitae suscipit tellus mauris a. Interdum varius sit amet mattis vulputate enim nulla aliquet porttitor. Lacus suspendisse faucibus interdum posuere lorem ipsum. At tellus at urna condimentum mattis pellentesque. Duis at consectetur lorem donec massa sapien faucibus et molestie.
+        </p>
+        <p>
+            <a href="#" target="_blank" class="btn btn-light">
+                <img src="{{ url_for('static', filename='icons/telegram.svg')}}" alt="..." height="25em" width="25em">
+                Telegram
+            </a>
+            <a href="#" target="_blank" class="btn btn-light">
+                <img src="{{ url_for('static', filename='icons/discord.svg')}}" alt="..." height="25em" width="25em">
+                Discord
+            </a>
+            <a href="#" target="_blank" class="btn btn-light">
+                <img src="{{ url_for('static', filename='icons/youtube.svg')}}" alt="..." height="25em" width="25em">
+                Youtube
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}
