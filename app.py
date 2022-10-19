@@ -7,6 +7,7 @@ menu = [
     {"name": "Блог", "url": "/"},
     {"name": "Подкаст", "url": "/podcast"},
     {"name": "Сообщество", "url": "/community"},
+    {"name": "Войти", "url": "/login"},
 ]
 
 
