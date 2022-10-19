@@ -1,9 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template
+from flask import Flask, render_template, request, flash
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SECRET_KEY'] = 'cd48ac70-1a42-4060-8148-18fde86bc196'
 
 db = SQLAlchemy(app)
 
@@ -68,6 +70,35 @@ def login():
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
+
+    if request.method == "POST":
+        if not (len(request.form['email']) > 8 and len(request.form['name']) > 3 and len(request.form['password']) > 5
+                and request.form['password'] == request.form['password_repeat']):
+            flash("Некорректные данные :(", category="danger")
+        else:
+            try:
+                hash = generate_password_hash(request.form['password'])
+                u = Users(
+                    email=request.form['email'],
+                    password=hash
+                )
+                db.session.add(u)
+                db.session.flush()
+
+                p = Profiles(
+                    name=request.form['name'],
+                    age=request.form['age'],
+                    city=request.form['city'],
+                    user_id=u.id
+                )
+                db.session.add(p)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                print("Ошибка добавления в базу данных")
+                flash("Некорректные данные :(", category="danger")
+            else:
+                flash("Регистрация прошла успешно :)", category="success")
 
     return render_template('register.html', menu=menu, title="Регистрация")
 
