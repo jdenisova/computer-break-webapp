@@ -2,6 +2,13 @@
 
 {% block content %}
 <form action="/login" method="post" style="max-width:500px;">
+
+    {% for cat, msg in get_flashed_messages(True) %}
+        <div class="alert alert-{{ cat }} text-center" role="alert">
+            {{ msg }}
+        </div>
+    {% endfor %}
+
     <div class="row mb-3">
         <label for="femail" class="col-sm-3 col-form-label"><h5>Email</h5></label>
         <div class="col-sm">

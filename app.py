@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, redirect, url_for
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -64,6 +64,18 @@ def page_not_found(error):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+
+    if request.method == "POST":
+        f = Users.query.filter_by(email = request.form['email']).first()
+
+        if not f:
+            flash("Участник с таким email не зарегистрирован.", category="danger")
+
+        password = Users.query.get(f.id).password
+        if not check_password_hash(password, request.form['password']):
+            flash("Неверный пароль.", category="danger")
+        else:
+            return redirect(url_for('index'))
 
     return render_template('login.html', menu=menu, title="Авторизация")
 
