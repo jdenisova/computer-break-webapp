@@ -1,6 +1,35 @@
+from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template
+from datetime import datetime
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+
+db = SQLAlchemy(app)
+
+
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(500), nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    pr = db.relationship('Profiles', backref='users', uselist=False)
+
+    def __repr__(self):
+        return f"<users {self.id}"
+
+
+class Profiles(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    age = db.Column(db.Integer)
+    city = db.Column(db.String(50))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return f"<users {self.id}"
 
 
 menu = [
