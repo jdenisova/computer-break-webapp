@@ -37,7 +37,7 @@ class Users(db.Model, UserMixin):
 
 class Profiles(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(50))
     age = db.Column(db.Integer)
     city = db.Column(db.String(50))
 
