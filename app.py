@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, flash, redirect, url_for
-from flask_login import UserMixin
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, IntegerField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo, NumberRange
@@ -12,6 +12,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SECRET_KEY'] = 'cd48ac70-1a42-4060-8148-18fde86bc196'
 
 db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
 
 
 class Users(db.Model, UserMixin):
@@ -97,7 +106,27 @@ def page_not_found(error):
 def login():
     form = LoginForm()
 
+    if form.validate_on_submit():
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('dashboard'))
+
     return render_template('login.html', menu=menu, title="Авторизация", form=form)
+
+
+@app.route("/dashboard", methods=["POST", "GET"])
+@login_required
+def dashboard():
+    return render_template('dashboard.html', menu=menu, title="Дашборд")
+
+
+@app.route("/logout", methods=["POST", "GET"])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 @app.route("/register", methods=["POST", "GET"])
