@@ -78,7 +78,7 @@ menu = [
     {"name": "Блог", "url": "/"},
     {"name": "Подкаст", "url": "/podcast"},
     {"name": "Сообщество", "url": "/community"},
-    {"name": "Войти", "url": "/login"},
+    {"name": "Дашборд", "url": "/dashboard"},
 ]
 
 
@@ -119,7 +119,8 @@ def login():
 @app.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    return render_template('dashboard.html', menu=menu, title="Дашборд")
+    user = Users.query.get(current_user.get_id())
+    return render_template('dashboard.html', menu=menu, title="Дашборд", user=user)
 
 
 @app.route("/logout", methods=["POST", "GET"])
