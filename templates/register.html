@@ -10,56 +10,58 @@
         </div>
     {% endfor %}
 
+    {{ form.hidden_tag() }}
+
     <div class="row mb-3">
-        <label for="femail" class="col-sm-4 col-form-label"><h5>Email</h5></label>
+        <label class="col-sm-4 col-form-label"><h5>Email</h5></label>
         <div class="col-sm">
-            <input type="email" name="email" class="form-control" id="femail" placeholder="">
+            {{ form.email(class="form-control") }}
         </div>
     </div>
 
     <div class="row mb-3">
-        <label for="fname" class="col-sm-4 col-form-label"><h5>Имя</h5></label>
+        <label class="col-sm-4 col-form-label"><h5>Имя</h5></label>
         <div class="col-sm">
-            <input type="text" name="name" class="form-control" id="fname" placeholder="">
+            {{ form.name(class="form-control") }}
         </div>
     </div>
 
     <div class="row mb-3">
-        <label for="fage" class="col-sm-4 col-form-label"><h5>Возраст</h5></label>
+        <label class="col-sm-4 col-form-label"><h5>Возраст</h5></label>
         <div class="col-sm">
-            <input type="text" name="age" class="form-control" id="fage" placeholder="">
+            {{ form.age(class="form-control") }}
         </div>
     </div>
 
     <div class="row mb-3">
-        <label for="fcity" class="col-sm-4 col-form-label"><h5>Город</h5></label>
+        <label class="col-sm-4 col-form-label"><h5>Город</h5></label>
         <div class="col-sm">
-            <input type="text" name="city" class="form-control" list="CityList" id="fcity" placeholder="">
-            <datalist id="CityList">
-                <option value="Москва">
-                <option value="Санкт-Петербург">
-                <option value="Красноярск">
-                <option value="Стамбул">
-            </datalist>
+            {{ form.city(class="form-control") }}
         </div>
     </div>
 
     <div class="row mb-3">
-        <label for="fpassword" class="col-sm-4 col-form-label"><h5>Пароль</h5></label>
+        <label class="col-sm-4 col-form-label"><h5>Пароль</h5></label>
         <div class="col-sm">
-            <input type="password" name="password" class="form-control" id="fpassword" placeholder="">
+            {{ form.password(class="form-control") }}
         </div>
     </div>
 
     <div class="row mb-3">
-        <label for="fpassword_repeat" class="col-sm-4 col-form-label"><h5>Повтор пароля</h5></label>
+        <label class="col-sm-4 col-form-label"><h5>Повтор пароля</h5></label>
         <div class="col-sm">
-            <input type="password" name="password_repeat" class="form-control" id="fpassword_repeat" placeholder="">
+            {{ form.confirm(class="form-control") }}
         </div>
     </div>
+
+    <style>
+        .reg{
+            width: 100%;
+        }
+    </style>
 
     <div class="text-center">
-        <button type="submit" class="btn btn-outline-dark" style="width: 100%;">Регистрация</button>
+        {{ form.submit(class="btn reg btn-outline-dark") }}
     </div>
 </form>
 {% endblock %}

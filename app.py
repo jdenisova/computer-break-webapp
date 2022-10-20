@@ -1,5 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, flash, redirect, url_for
+from flask_login import UserMixin
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, EmailField, IntegerField, SubmitField
+from wtforms.validators import InputRequired, Length, ValidationError, EqualTo, NumberRange
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -10,7 +14,7 @@ app.config['SECRET_KEY'] = 'cd48ac70-1a42-4060-8148-18fde86bc196'
 db = SQLAlchemy(app)
 
 
-class Users(db.Model):
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(500), nullable=True)
@@ -32,6 +36,33 @@ class Profiles(db.Model):
 
     def __repr__(self):
         return f"<users {self.id}"
+
+
+class RegisterForm(FlaskForm):
+    email = EmailField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "email"})
+    name = StringField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "имя"})
+    age = IntegerField(validators=[InputRequired(), NumberRange(min=0, max=100)], render_kw={"placeholder": "возраст"})
+    city = StringField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "город"})
+    password = PasswordField(validators=[InputRequired(), Length(min=6, max=20),
+                                         EqualTo('confirm', message='Пароли должны совпадать')],
+                             render_kw={"placeholder": "пароль"})
+    confirm = PasswordField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "Повтори пароль"})
+
+    submit = SubmitField("Регистрация")
+
+    def validate_email(self, email):
+        existing_user_email = Users.query.filter_by(email=email.data).first()
+
+        if existing_user_email:
+            flash("Пользователь с такой почтой уже зарегистрирован. :(", category="danger")
+            raise ValidationError("Пользователь с такой почтой уже зарегистрирован. Выбери другую почту.")
+
+
+class LoginForm(FlaskForm):
+    email = EmailField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "email"})
+    password = PasswordField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "пароль"})
+
+    submit = SubmitField("Войти")
 
 
 menu = [
@@ -64,57 +95,41 @@ def page_not_found(error):
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    form = LoginForm()
 
-    if request.method == "POST":
-        f = Users.query.filter_by(email=request.form['email']).first()
-
-        if not f:
-            flash("Участник с таким email не зарегистрирован.", category="danger")
-
-        else:
-            password = Users.query.get(f.id).password
-
-            if not check_password_hash(password, request.form['password']):
-                flash("Неверный пароль.", category="danger")
-            else:
-                return redirect(url_for('index'))
-
-    return render_template('login.html', menu=menu, title="Авторизация")
+    return render_template('login.html', menu=menu, title="Авторизация", form=form)
 
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
+    form = RegisterForm()
 
-    if request.method == "POST":
-        if not (len(request.form['email']) > 8 and len(request.form['name']) > 3 and len(request.form['password']) > 5
-                and request.form['password'] == request.form['password_repeat']):
+    if form.validate_on_submit():
+        try:
+            hash = generate_password_hash(form.password.data)
+            u = Users(
+                email=form.email.data,
+                password=hash
+            )
+            db.session.add(u)
+            db.session.flush()
+
+            p = Profiles(
+                name=form.name.data,
+                age=form.age.data,
+                city=form.city.data,
+                user_id=u.id
+            )
+            db.session.add(p)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            print("Ошибка добавления в базу данных")
             flash("Некорректные данные :(", category="danger")
         else:
-            try:
-                hash = generate_password_hash(request.form['password'])
-                u = Users(
-                    email=request.form['email'],
-                    password=hash
-                )
-                db.session.add(u)
-                db.session.flush()
+            flash("Регистрация прошла успешно :)", category="success")
 
-                p = Profiles(
-                    name=request.form['name'],
-                    age=request.form['age'],
-                    city=request.form['city'],
-                    user_id=u.id
-                )
-                db.session.add(p)
-                db.session.commit()
-            except:
-                db.session.rollback()
-                print("Ошибка добавления в базу данных")
-                flash("Некорректные данные :(", category="danger")
-            else:
-                flash("Регистрация прошла успешно :)", category="success")
-
-    return render_template('register.html', menu=menu, title="Регистрация")
+    return render_template('register.html', menu=menu, title="Регистрация", form=form)
 
 
 if __name__ == "__main__":
