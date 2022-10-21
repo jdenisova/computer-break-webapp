@@ -82,13 +82,13 @@ class Posts(db.Model):
 
 class RegisterForm(FlaskForm):
     email = EmailField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "email"})
-    name = StringField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "имя"})
+    name = StringField(validators=[InputRequired(), Length(max=20)], render_kw={"placeholder": "имя"})
     age = IntegerField(validators=[InputRequired(), NumberRange(min=0, max=100)], render_kw={"placeholder": "возраст"})
-    city = StringField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "город"})
-    password = PasswordField(validators=[InputRequired(), Length(min=6, max=20),
+    city = StringField(validators=[InputRequired(), Length(max=20)], render_kw={"placeholder": "город"})
+    password = PasswordField(validators=[InputRequired(), Length(min=12, max=20),
                                          EqualTo('confirm', message='Пароли должны совпадать')],
                              render_kw={"placeholder": "пароль"})
-    confirm = PasswordField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "Повтори пароль"})
+    confirm = PasswordField(validators=[InputRequired(), Length(min=12, max=20)], render_kw={"placeholder": "Повтори пароль"})
 
     submit = SubmitField("Регистрация")
 
@@ -102,7 +102,7 @@ class RegisterForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = EmailField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "email"})
-    password = PasswordField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "пароль"})
+    password = PasswordField(validators=[InputRequired(), Length(min=12, max=20)], render_kw={"placeholder": "пароль"})
 
     submit = SubmitField("Войти")
 
