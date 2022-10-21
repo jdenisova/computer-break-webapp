@@ -1,37 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="/login" method="post" style="max-width:500px;">
 
-    {% for cat, msg in get_flashed_messages(True) %}
-        <div class="alert alert-{{ cat }} text-center" role="alert">
-            {{ msg }}
-        </div>
-    {% endfor %}
+<div class="row">
+    <div class="col-sm-3"></div>
 
-    {{ form.hidden_tag() }}
+    <div class="col-sm">
+        <form action="/login" method="post" style="max-width:500px;">
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label"><h5>Email</h5></label>
-        <div class="col-sm">
-            {{ form.email(class="form-control") }}
-        </div>
+            {% for cat, msg in get_flashed_messages(True) %}
+                <div class="alert alert-{{ cat }} text-center" role="alert"> {{ msg }} </div>
+            {% endfor %}
+
+            {{ form.hidden_tag() }}
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label"><h5>Email</h5></label>
+                <div class="col-sm"> {{ form.email(class="form-control") }} </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label"><h5>Пароль</h5></label>
+                <div class="col-sm"> {{ form.password(class="form-control") }} </div>
+            </div>
+
+            <div class="container">
+                <div class="row mb-3">
+                    {{ form.submit(class="col-sm-8 btn btn-outline-dark") }} &nbsp;
+                    <a href="{{ url_for('register') }}" class="col-sm btn btn-outline-secondary">Регистрация</a>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label"><h5>Пароль</h5></label>
-        <div class="col-sm">
-            {{ form.password(class="form-control") }}
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row mb-3">
-            {{ form.submit(class="col-sm-8 btn btn-outline-dark") }}
-            &nbsp;
-            <a href="{{ url_for('register') }}" class="col-sm btn btn-outline-secondary">Регистрация</a>
-        </div>
-    </div>
-</form>
-
+    <div class="col-sm-3"></div>
+</div>
 {% endblock %}

@@ -160,6 +160,7 @@ def login():
 
 
 @app.route("/add_post", methods=["POST", "GET"])
+@login_required
 def add_post():
     form = AddPostForm()
 
