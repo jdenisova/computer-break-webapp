@@ -155,6 +155,10 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
                 return redirect(url_for('dashboard'))
+            else:
+                flash("Неверный пароль :(", category="danger")
+        else:
+            flash("Пользователь с таким email не зарегистрирован :(", category="danger")
 
     return render_template('login.html', menu=menu, title="Авторизация", form=form)
 
@@ -227,9 +231,8 @@ def register():
             db.session.add(p)
             db.session.commit()
         except:
-            db.session.rollback()
-            print("Ошибка добавления в базу данных")
             flash("Некорректные данные :(", category="danger")
+            db.session.rollback()
         else:
             flash("Регистрация прошла успешно :)", category="success")
             redirect(url_for('login'))
