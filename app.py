@@ -88,7 +88,7 @@ class RegisterForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(min=12, max=20),
                                          EqualTo('confirm', message='Пароли должны совпадать')],
                              render_kw={"placeholder": "пароль"})
-    confirm = PasswordField(validators=[InputRequired(), Length(min=12, max=20)], render_kw={"placeholder": "Повтори пароль"})
+    confirm = PasswordField(validators=[InputRequired(), Length(min=12, max=20)], render_kw={"placeholder": "повтори пароль"})
 
     submit = SubmitField("Регистрация")
 
