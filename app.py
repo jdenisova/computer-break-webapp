@@ -163,6 +163,13 @@ def add_post():
     return render_template('add_post.html', menu=menu, title="Добавить пост", form=form)
 
 
+@app.route("/post/<id>/")
+def post(id):
+    post = Posts.query.get(id)
+    user = Users.query.get(post.user_id)
+    return render_template('post.html', menu=menu, post=post, user=user)
+
+
 @app.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():

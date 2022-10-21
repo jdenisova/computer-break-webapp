@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row mb-5">
+    <div class="col">
+        <h1>{{ post.title }}</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <span><b>{{ user.pr.name }}</b> {{ post.date.strftime("%Y-%m-%d") }} # {{ post.category }}</span>
+    </div>
+</div>
+
+<div class="row mt-2 mb-4">
+    <div class="col"><hr style="background-color: rgba(59,43,26,0.4);"></div>
+</div>
+
+<div class="row">
+    <div class="col">
+        {{ post.text }}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 {% for user, post in table %}
 <div class="card mb-3 p-3" style="max-width: 1200px;">
   <div class="row g-0">
 
     <div class="col-md-7">
       <div class="card-body">
-        <h5 class="card-title">{{post.title}}</h5>
-        <p class="card-text">{{post.text[:50]}}</p>
-        <p class="card-text"><small class="text-muted"><b> {{ user.pr.name }} </b> {{post.date.strftime("%Y-%m-%d")}} {{post.category}}</small></p>
-        <a href="#" target="_blank" class="btn btn-outline-dark">Читать далее</a>
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="card-text">{{ post.text[:50] }}</p>
+        <p class="card-text"><small class="text-muted"><b> {{ user.pr.name }} </b> {{ post.date.strftime("%Y-%m-%d") }}
+          # {{ post.category }}</small></p>
+        <a href="{{ url_for('post', id=post.id) }}" class="btn btn-outline-dark">Читать далее</a>
       </div>
     </div>
   </div>
