@@ -47,6 +47,20 @@ class Profiles(db.Model):
         return f"<users {self.id}"
 
 
+class Posts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), nullable=True)
+    text = db.Column(db.Text, nullable=True)
+    author = db.Column(db.String(250), nullable=True)
+    category = db.Column(db.String(250), nullable=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return f"<users {self.id}>"
+
+
 class RegisterForm(FlaskForm):
     email = EmailField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "email"})
     name = StringField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "имя"})
@@ -158,6 +172,7 @@ def register():
             flash("Некорректные данные :(", category="danger")
         else:
             flash("Регистрация прошла успешно :)", category="success")
+            redirect(url_for('login'))
 
     return render_template('register.html', menu=menu, title="Регистрация", form=form)
 
