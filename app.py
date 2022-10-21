@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField, IntegerField, SubmitField
+from wtforms import StringField, TextAreaField, SelectMultipleField, PasswordField, EmailField, IntegerField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo, NumberRange
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -51,7 +51,6 @@ class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), nullable=True)
     text = db.Column(db.Text, nullable=True)
-    author = db.Column(db.String(250), nullable=True)
     category = db.Column(db.String(250), nullable=True)
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -86,6 +85,16 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(min=6, max=20)], render_kw={"placeholder": "пароль"})
 
     submit = SubmitField("Войти")
+
+
+class AddPostForm(FlaskForm):
+    title = StringField(validators=[InputRequired(), Length(min=6, max=150)], render_kw={"placeholder": ""})
+    text = TextAreaField(validators=[InputRequired()], render_kw={"placeholder": ""})
+    category = SelectMultipleField(validators=[InputRequired()], render_kw={"placeholder": ""},
+                                   choices=["Python", "Machine Learning", "Life Style"],
+                                   option_widget=None)
+
+    submit = SubmitField("Добавить")
 
 
 menu = [
@@ -128,6 +137,28 @@ def login():
                 return redirect(url_for('dashboard'))
 
     return render_template('login.html', menu=menu, title="Авторизация", form=form)
+
+
+@app.route("/add_post", methods=["POST", "GET"])
+def add_post():
+    form = AddPostForm()
+
+    if form.validate_on_submit():
+        try:
+            p = Posts(
+                title=form.title.data,
+                text=form.text.data,
+                category=" ".join(form.category.data),
+                user_id=current_user.get_id(),
+            )
+            db.session.add(p)
+            db.session.commit()
+        except:
+            flash("Пост не добавлен :(", category="danger")
+        else:
+            flash("Пост добавлен :)", category="success")
+
+    return render_template('add_post.html', menu=menu, title="Добавить пост", form=form)
 
 
 @app.route("/dashboard", methods=["POST", "GET"])
