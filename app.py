@@ -107,9 +107,7 @@ menu = [
 
 @app.route("/")
 def index():
-    table = db.session.query(Users, Posts).join(Posts, Users.id == Posts.user_id).all()
-
-    print(table)
+    table = db.session.query(Users, Posts).join(Posts, Users.id == Posts.user_id).order_by(Posts.date.desc()).all()
 
     return render_template("index.html", menu=menu, title="Блог", table=table)
 
@@ -169,7 +167,7 @@ def add_post():
 @login_required
 def dashboard():
     user = Users.query.get(current_user.get_id())
-    user_posts = Posts.query.filter_by(user_id = current_user.get_id())
+    user_posts = Posts.query.filter_by(user_id=current_user.get_id()).order_by(Posts.date.desc()).all()
     return render_template('dashboard.html', menu=menu, title="Дашборд", user=user, posts=user_posts)
 
 
