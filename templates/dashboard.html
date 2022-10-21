@@ -33,45 +33,19 @@
 
 <div class="container">
     <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col">
-            <div class="card mb-3" style="background-color: rgba(166,141,111,0.2);">
-                <div class="card-body">
-                    <h5 class="card-title">Заголовок карточки</h5>
-                    <p class="card-text">Это более длинная карта С вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
-                    <a href="#" class="btn btn-dark">Читать пост</a>
-                </div>
-            </div>
-        </div>
 
+        {% for post in posts %}
         <div class="col">
             <div class="card mb-3" style="background-color: rgba(166,141,111,0.2);">
                 <div class="card-body">
-                    <h5 class="card-title">Заголовок карточки</h5>
-                    <p class="card-text">Это более длинная карта С вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
+                    <h5 class="card-title"> {{ post.title}} </h5>
+                    <p class="card-text"> {{ post.text[:50] }}</p>
                     <a href="#" class="btn btn-dark">Читать пост</a>
                 </div>
             </div>
         </div>
+        {% endfor %}
 
-        <div class="col">
-            <div class="card mb-3" style="background-color: rgba(166,141,111,0.2);">
-                <div class="card-body">
-                    <h5 class="card-title">Заголовок карточки</h5>
-                    <p class="card-text">Это более длинная карта С вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
-                    <a href="#" class="btn btn-dark">Читать пост</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card mb-3" style="background-color: rgba(166,141,111,0.2);">
-                <div class="card-body">
-                    <h5 class="card-title">Заголовок карточки</h5>
-                    <p class="card-text">Это более длинная карта С вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
-                    <a href="#" class="btn btn-dark">Читать пост</a>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

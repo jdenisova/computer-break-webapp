@@ -57,7 +57,7 @@ class Posts(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
-        return f"<users {self.id}>"
+        return f"<posts {self.id}>"
 
 
 class RegisterForm(FlaskForm):
@@ -107,7 +107,11 @@ menu = [
 
 @app.route("/")
 def index():
-    return render_template("index.html", menu=menu, title="Блог")
+    table = db.session.query(Users, Posts).join(Posts, Users.id == Posts.user_id).all()
+
+    print(table)
+
+    return render_template("index.html", menu=menu, title="Блог", table=table)
 
 
 @app.route("/podcast")
@@ -165,7 +169,8 @@ def add_post():
 @login_required
 def dashboard():
     user = Users.query.get(current_user.get_id())
-    return render_template('dashboard.html', menu=menu, title="Дашборд", user=user)
+    user_posts = Posts.query.filter_by(user_id = current_user.get_id())
+    return render_template('dashboard.html', menu=menu, title="Дашборд", user=user, posts=user_posts)
 
 
 @app.route("/logout", methods=["POST", "GET"])
