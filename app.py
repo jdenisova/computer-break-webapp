@@ -17,6 +17,21 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
+menu = [
+    {"name": "Блог", "url": "/"},
+    {"name": "Подкаст", "url": "/podcast"},
+    {"name": "Сообщество", "url": "/community"},
+    {"name": "Дашборд", "url": "/dashboard"},
+]
+
+categories = [
+    "Python",
+    "Machine Learning",
+    "Deep Learning",
+    "Life Style",
+    "Productivity",
+]
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -91,25 +106,23 @@ class AddPostForm(FlaskForm):
     title = StringField(validators=[InputRequired(), Length(min=6, max=150)], render_kw={"placeholder": ""})
     text = TextAreaField(validators=[InputRequired()], render_kw={"placeholder": ""})
     category = SelectMultipleField(validators=[InputRequired()], render_kw={"placeholder": ""},
-                                   choices=["Python", "Machine Learning", "Life Style"],
+                                   choices=categories,
                                    option_widget=None)
 
     submit = SubmitField("Добавить")
 
 
-menu = [
-    {"name": "Блог", "url": "/"},
-    {"name": "Подкаст", "url": "/podcast"},
-    {"name": "Сообщество", "url": "/community"},
-    {"name": "Дашборд", "url": "/dashboard"},
-]
-
-
 @app.route("/")
 def index():
     table = db.session.query(Users, Posts).join(Posts, Users.id == Posts.user_id).order_by(Posts.date.desc()).all()
+    return render_template("index.html", menu=menu, title="Блог", table=table, categories=categories)
 
-    return render_template("index.html", menu=menu, title="Блог", table=table)
+
+@app.route("/category/<cat>/")
+def category(cat):
+    table = db.session.query(Users, Posts).join(Posts, Users.id == Posts.user_id).order_by(Posts.date.desc()).\
+        filter(Posts.category.like(f"%{cat}%")).all()
+    return render_template('index.html', menu=menu, title=cat, table=table, categories=categories)
 
 
 @app.route("/podcast")
