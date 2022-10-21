@@ -28,8 +28,13 @@ categories = [
     "Python",
     "Machine Learning",
     "Deep Learning",
-    "Life Style",
+    "Algorithms",
+    "Mathematics",
+    "Backend",
+    "Chatbot",
+    "Procedural CG",
     "Productivity",
+    "Break",
 ]
 
 
