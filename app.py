@@ -19,7 +19,6 @@ login_manager.login_view = "login"
 
 menu = [
     {"name": "Блог", "url": "/"},
-    {"name": "Подкаст", "url": "/podcast"},
     {"name": "Сообщество", "url": "/community"},
     {"name": "Дашборд", "url": "/dashboard"},
 ]
@@ -128,11 +127,6 @@ def category(cat):
     table = db.session.query(Users, Posts).join(Posts, Users.id == Posts.user_id).order_by(Posts.date.desc()).\
         filter(Posts.category.like(f"%{cat}%")).all()
     return render_template('index.html', menu=menu, title=cat, table=table, categories=categories)
-
-
-@app.route("/podcast")
-def podcast():
-    return render_template('podcast.html', menu=menu, title="Подкаст")
 
 
 @app.route("/community")
