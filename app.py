@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, abort
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectMultipleField, PasswordField, EmailField, IntegerField, SubmitField
@@ -179,6 +179,27 @@ def add_post():
             flash("Пост добавлен :)", category="success")
 
     return render_template('add_post.html', menu=menu, title="Добавить пост", form=form)
+
+
+@app.route("/delete_post/<id>/", methods=["POST", "GET"])
+@login_required
+def delete_post(id):
+    post = Posts.query.get(id)
+
+    if not post:
+        abort(404)
+
+    if not post.user_id == int(current_user.get_id()):
+        abort(401)
+
+    try:
+        db.session.delete(post)
+    except:
+        print("Ошибка удаления записи")
+    else:
+        db.session.commit()
+
+    return redirect(url_for('dashboard'))
 
 
 @app.route("/post/<id>/")
