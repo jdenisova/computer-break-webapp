@@ -205,7 +205,13 @@ def delete_post(id):
 @app.route("/post/<id>/")
 def post(id):
     post = Posts.query.get(id)
+    if not post:
+        abort(404)
+
     user = Users.query.get(post.user_id)
+    if not user:
+        abort(404)
+
     return render_template('post.html', menu=menu, post=post, user=user)
 
 
