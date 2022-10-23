@@ -6,10 +6,11 @@ from wtforms import StringField, TextAreaField, SelectMultipleField, PasswordFie
 from wtforms.validators import InputRequired, Length, ValidationError, EqualTo, NumberRange
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from config import NAME_DB, SECRET_KEY
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
-app.config['SECRET_KEY'] = 'cd48ac70-1a42-4060-8148-18fde86bc196'
+app.config['SQLALCHEMY_DATABASE_URI'] = NAME_DB
+app.config['SECRET_KEY'] = SECRET_KEY
 
 db = SQLAlchemy(app)
 
